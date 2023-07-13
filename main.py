@@ -1,6 +1,6 @@
 import config
+import gpt
 import recommender
-import spotipy
 
 SPOTIFY_USERNAME = config.username
 
@@ -17,7 +17,7 @@ def display_menu():
     print("Welcome to your personal spotify engine! Please Select a task:")
     print("1. Search")
     print("2. Create Playlist")
-    print("3. Eat Dogshit")
+    print("3. Talk to God")
 
 
 while True:
@@ -27,6 +27,6 @@ while True:
     if choice == "1":
         print(search())
     elif choice == "2":
-        recommender.get_recommendations()
+        recommender.playlist_based()
     elif choice == "3":
-        search()
+        gpt.main()

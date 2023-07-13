@@ -1,8 +1,9 @@
 import config
 import math
+import re
 
 
-def get_recommendations():
+def song_based():
     results = config.sp.current_user_saved_tracks(limit=5)
     track_ids = [item['track']['id'] for item in results['items']]  # Extract track IDs
 
@@ -19,10 +20,9 @@ def get_recommendations():
         print(idx, track['id'])
 
 
-def playlist_based(playlist):
-    # Define the playlist ID
-    playlist_id = playlist
-
+# 22powvpqdhdjxo6kvxuy7jtpq
+def playlist_based():
+    playlist_id = playlist_search()
     # Retrieve the playlist tracks
     playlist_tracks = config.sp.playlist_items(playlist_id)
 
@@ -34,7 +34,6 @@ def playlist_based(playlist):
 
     # Initialize an empty list to store the recommendations
     all_recommendations = []
-
     # Iterate through the playlist tracks in groups of 5
     for i in range(num_iterations):
         # Calculate the start and end indices for the current group
@@ -53,3 +52,44 @@ def playlist_based(playlist):
     # Print the combined recommendations
     for idx, track in enumerate(all_recommendations):
         print(idx, track['name'])
+    create_playlist(all_recommendations, 1)
+    return None
+
+
+def playlist_search():
+    playlist_id = None
+    # Define the playlist name and owner name
+    target_playlist_name = input("Please enter playlist name: ")
+    target_owner_name = input("Please enter playlist owner name: ")
+    # Retrieve playlists
+    playlists = config.sp.user_playlists(target_owner_name)
+    # Iterate over the playlists and find the matching playlist
+    for playlist in playlists['items']:
+        if playlist['name'] == target_playlist_name:
+            playlist_id = playlist['id']
+            print("Playlist ID:", playlist_id)
+            break
+
+    if 'playlist_id' == None:
+        print("Playlist not found.")
+    return playlist_id
+
+
+def create_playlist(recommendations, calling_function):
+    playlist_name = input("Please enter playlist name: ")
+    playlist_description = input("Please enter playlist description: ")
+    config.scope = "playlist-modify-private"
+    playlist = config.sp.user_playlist_create(config.username, playlist_name, public=True,
+                                              description=playlist_description)
+    playlist_id = playlist['id']
+    if calling_function == 1:
+        track_ids = [track['id'] for track in recommendations]
+        config.sp.playlist_add_items(playlist_id, track_ids)
+    else:
+        config.sp.playlist_add_items(playlist_id, recommendations)
+
+    print("Playlist created:")
+    print("Name:", playlist['name'])
+    print("Owner:", playlist['owner']['display_name'])
+    print("Public:", playlist['public'])
+    print("Tracks:", playlist['tracks']['total'])
