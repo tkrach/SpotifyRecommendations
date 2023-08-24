@@ -56,7 +56,6 @@ def gpt_gen_playlist():
     return None
 
 
-
 def gpt_eats_playlist():
     playlist_id = playlists.playlist_search()
 

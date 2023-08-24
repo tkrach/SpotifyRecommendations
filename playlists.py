@@ -1,26 +1,7 @@
 import config
 import math
-import re
 
 
-def song_based():
-    results = config.sp.current_user_saved_tracks(limit=5)
-    track_ids = [item['track']['id'] for item in results['items']]  # Extract track IDs
-
-    for idx, item in enumerate(results['items']):
-        track = item['track']
-        print(idx, track['artists'][0]['name'], " – ", track['name'])
-
-    recommends = config.sp.recommendations(seed_tracks=track_ids, limit=10)  # Pass track IDs as seed_tracks
-    # Print recommendations with only track name
-    for idx, track in enumerate(recommends['tracks']):
-        print(idx, track['name'])
-    # Print recommendations with only track ID
-    for idx, track in enumerate(recommends['tracks']):
-        print(idx, track['id'])
-
-
-# 22powvpqdhdjxo6kvxuy7jtpq
 def playlist_based(playlist_id, owner):
     if playlist_id is None:
         playlist_id = playlist_search()
