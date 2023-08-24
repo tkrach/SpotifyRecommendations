@@ -21,8 +21,9 @@ def song_based():
 
 
 # 22powvpqdhdjxo6kvxuy7jtpq
-def playlist_based():
-    playlist_id = playlist_search()
+def playlist_based(playlist_id, owner):
+    if playlist_id is None:
+        playlist_id = playlist_search()
     # Retrieve the playlist tracks
     playlist_tracks = config.sp.playlist_items(playlist_id)
 
@@ -52,7 +53,11 @@ def playlist_based():
     # Print the combined recommendations
     for idx, track in enumerate(all_recommendations):
         print(idx, track['name'])
-    create_playlist(all_recommendations, 1)
+    if owner is None:
+        create_playlist(all_recommendations, 1)
+    else:
+        track_ids = [track['id'] for track in all_recommendations]
+        add_tracks(track_ids, playlist_id)
     return None
 
 
@@ -75,6 +80,11 @@ def playlist_search():
     return playlist_id
 
 
+def add_tracks(tracks, playlist_id):
+    config.sp.playlist_add_items(playlist_id=playlist_id, items=tracks)
+    return None
+
+
 def create_playlist(recommendations, calling_function):
     playlist_name = input("Please enter playlist name: ")
     playlist_description = input("Please enter playlist description: ")
@@ -93,3 +103,4 @@ def create_playlist(recommendations, calling_function):
     print("Owner:", playlist['owner']['display_name'])
     print("Public:", playlist['public'])
     print("Tracks:", playlist['tracks']['total'])
+    return playlist_id, playlist['owner']

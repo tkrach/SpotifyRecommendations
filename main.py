@@ -1,6 +1,6 @@
 import config
 import gpt
-import recommender
+import playlists
 
 SPOTIFY_USERNAME = config.username
 
@@ -27,6 +27,6 @@ while True:
     if choice == "1":
         print(search())
     elif choice == "2":
-        recommender.playlist_based()
+        playlists.playlist_based()
     elif choice == "3":
         gpt.main()
