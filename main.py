@@ -2,8 +2,6 @@ import config
 import gpt
 import playlists
 
-SPOTIFY_USERNAME = config.username
-
 
 def search():
     print("Here you can search a song and receive the song ID in response.")
@@ -17,7 +15,6 @@ def display_menu():
     print("Welcome to your personal spotify engine! Please Select a task:")
     print("1. Search")
     print("2. Create Playlist")
-    print("3. Talk to God")
 
 
 while True:
@@ -27,6 +24,14 @@ while True:
     if choice == "1":
         print(search())
     elif choice == "2":
-        playlists.playlist_based()
-    elif choice == "3":
-        gpt.main()
+        print("1. ChatGPT based playlist generation")
+        print("2. Spotify only based playlist generation")
+        choice2 = input("Enter your choice: ")
+        if choice2 == "1":
+            gpt.menu()
+        elif choice2 == "2":
+            playlists.playlist_based()
+        else:
+            print("Choice not recognized. Please try again")
+    else:
+        print("Choice not recognized. Please try again")

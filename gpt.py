@@ -89,16 +89,7 @@ def format_response(recommendations):
     pattern = r'"(.*)"'
     matches = re.findall(pattern, recommendations)
     print(matches)
-    # Format the matches as a list
-    # pattern = r'\d+\.\s(.+?)(?:\n|$)'
-    # matches = re.findall(pattern, recommendations)
-    track_list = []
     track_list = matches
-    # for song, artist in matches:
-    # if artist:
-    #   track_list.append(f"{song} - {artist}")
-    # else:
-    #   track_list.append(song)
     print(track_list)
     for track in track_list:
         search_results = config.sp.search(q=track, limit=1)

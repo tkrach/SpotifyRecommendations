@@ -2,7 +2,7 @@ import config
 import math
 
 
-def playlist_based(playlist_id, owner):
+def playlist_based(playlist_id=None, owner=None):
     if playlist_id is None:
         playlist_id = playlist_search()
     # Retrieve the playlist tracks
@@ -42,6 +42,7 @@ def playlist_based(playlist_id, owner):
     return None
 
 
+# Simple search function that uses Spotify API to search for the playlist ID given the name and owner of the playlist
 def playlist_search():
     playlist_id = None
     # Define the playlist name and owner name
@@ -56,11 +57,13 @@ def playlist_search():
             print("Playlist ID:", playlist_id)
             break
 
-    if 'playlist_id' == None:
+    if 'playlist_id' is None:
         print("Playlist not found.")
     return playlist_id
 
 
+# Given a list of track IDs and a playlist ID,
+# this function will use the Spotify API to add these tracks to the supplied playlist
 def add_tracks(tracks, playlist_id):
     config.sp.playlist_add_items(playlist_id=playlist_id, items=tracks)
     return None
@@ -73,6 +76,7 @@ def create_playlist(recommendations, calling_function):
     playlist = config.sp.user_playlist_create(config.username, playlist_name, public=True,
                                               description=playlist_description)
     playlist_id = playlist['id']
+    # Simple check if the calling function is from the ChatGPT recommendation function or the Spotify algorithm function
     if calling_function == 1:
         track_ids = [track['id'] for track in recommendations]
         config.sp.playlist_add_items(playlist_id, track_ids)
