@@ -24,3 +24,5 @@ This project integrates OpenAI's GPT-3.5 model and Spotify's API to provide func
    ```bash
    git clone https://github.com/yourusername/personal-spotify-engine.git
    cd personal-spotify-engine
+## Note
+This project is no longer actively maintained. It is being ported into an Android app, which you can find [here.](https://github.com/tkrach/PlaylistBot/)
